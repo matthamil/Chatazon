@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.0.min.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/signalr/jquery.signalr-2.2.0.min.js"></script>
+<script src="/signalr/hubs"></script>
+
+<input id="textInput" type="text" placeholder="Say hello!" />
+
+<button class="btn btn-primary" id="publishPostButton">Send</button>
+
+<ul id="postsList"></ul>
+
+<script type="text/javascript">
+    $.ajax({
+        url: '/chatroom/',
+        method: 'GET',
+        dataType: 'JSON',
+        success: addPostsList
+    });
+
+    function addPostsList(posts) {
+        $.each(posts, function (index) {
+            var post = posts[index];
+            addPost(post);
+        });
+    }
+
+    function addPost(post) {
+        console.log('New post from server: ', post);
+        $("#postsList").append('<li>' + '(' + post.timestamp + ') ' + post.author + ': ' + post.content + '</li>');
+    }
+
+    // Connect to the broadcaster on the server
+    var hub = $.connection.broadcaster;
+
+    // A function we will call from the server
+    $.connection.broadcaster.client.addChatMessage = addPost;
+
+    $("#publishPostButton").click(function () {
+        var post = {
+            content: $("#textInput").val()
+        };
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            type: 'POST',
+            url: '/chatroom/',
+            data: JSON.stringify(post),
+            dataType: 'json'
+        }).fail(function(e) {
+            console.log(e);
+        });
+    });
+
+    // This console.logs a lot of helpful debugging info!
+    $.connection.hub.logging = true;
+
+    // Let's connect to the hub!
+    $.connection.hub.start().done(function(signalr) {
+        console.log('Connected!');
+        console.log('SignalR object: ', signalr);
+        // The subscribe method lets you subscribe to a specific method on the server
+        // You could use this method to subscribe to a specific chatroom,
+        // listen for updates to a specific resource, or whatever you would want to "subscribe" to.
+        hub.server.subscribe("MainChatroom");
+    }).fail(function(error) {
+        // Just in case we fail to connect
+        console.log('Failed to start connection! Error: ', error);
+    });
+</script>
