@@ -8,6 +8,7 @@ This project uses .NET Core and SignalR library to implement websockets for real
 
 ```bash
 dotnet restore
+dotnet ef database update
 dotnet run
 ```
 
