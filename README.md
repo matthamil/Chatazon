@@ -2,6 +2,8 @@
 
 An example project using websockets in .NET Core.
 
+![Example](https://i.imgur.com/KTmElpH.gif)
+
 ## Install
 
 This project uses .NET Core and SignalR library to implement websockets for real-time applications.
