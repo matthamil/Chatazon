@@ -2,6 +2,8 @@
 
 An example project using websockets in .NET Core.
 
+[Watch the tutorial on YouTube](https://www.youtube.com/watch?v=Fr4rWZIDdzs&)
+
 ![Example](https://i.imgur.com/KTmElpH.gif)
 
 ## Install
