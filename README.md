@@ -1,5 +1,7 @@
 # Chatazon
 
+#### NOTE: This example uses the old SignalR client library.
+
 An example project using websockets in .NET Core.
 
 [Watch the tutorial on YouTube](https://www.youtube.com/watch?v=Fr4rWZIDdzs&)
